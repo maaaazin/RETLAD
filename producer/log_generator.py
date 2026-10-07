@@ -59,6 +59,9 @@ class LogGenerator:
                 response_time_ms=self._random.randint(1_100, 2_500),
             )
 
+        # This label is for explaining a demonstration. Spark detects anomalies
+        # from the actual request behaviour, not from this field.
+        event["traffic_type"] = scenario.value
         return event
 
     def _normal_event(self) -> dict[str, Any]:

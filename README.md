@@ -51,6 +51,29 @@ uv run python -m producer.kafka_producer --scenario slow_endpoint --events-per-s
 Use `--max-events 10` for a short, finite run. The Spark pipeline is added in
 the next milestone.
 
+### Recommended live demo
+
+Keep normal traffic running in one terminal:
+
+```bash
+uv run python -m producer.kafka_producer --scenario normal --events-per-second 5
+```
+
+While it continues, use a second terminal to inject a short, finite anomaly
+burst. Normal traffic is not stopped.
+
+```bash
+# Demonstrate an order-service failure.
+uv run python -m producer.kafka_producer --scenario error_spike --events-per-second 20 --max-events 40
+
+# Demonstrate excessive traffic from one IP address.
+uv run python -m producer.kafka_producer --scenario suspicious_ip --events-per-second 60 --max-events 60
+```
+
+Every event contains a `traffic_type` label for explaining the demonstration.
+It is not used by Spark's anomaly rules; Spark detects the actual error rate,
+request volume, and response-time behaviour.
+
 ## Run streaming analytics
 
 Once the local services are running, start the pipeline in a second terminal:
