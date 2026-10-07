@@ -4,6 +4,9 @@ A Big Data Analytics course project that ingests simulated web-server logs with
 Apache Kafka, analyzes them in real time using Spark Structured Streaming, and
 visualizes operational metrics and anomalies in Grafana.
 
+For full setup, demo, shutdown, restart, and troubleshooting instructions, see
+[the user guide](docs/user-guide.md).
+
 ## Architecture
 
 ```text
