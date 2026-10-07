@@ -15,6 +15,7 @@
 - [x] Build a repeatable normal-traffic generator.
 - [x] Build controlled error-spike, suspicious-IP, and slow-endpoint scenarios.
 - [x] Build a Kafka producer with configurable rate and scenario.
+- [x] Label generated events for easy demo explanation without affecting detection.
 - [x] Verify messages reach Kafka by consuming the `web_logs` topic.
 
 ## 3. Streaming Analytics
@@ -30,6 +31,7 @@
 - [x] Create requests-per-minute and error-rate panels.
 - [x] Create top-endpoint and slow-endpoint panels.
 - [x] Create the active-alert panel.
+- [x] Create the top-IP-addresses panel for suspicious-traffic demonstrations.
 - [x] Configure a five-second dashboard refresh and alert-friendly thresholds.
 
 ## 5. Quality and Submission

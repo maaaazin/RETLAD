@@ -51,6 +51,16 @@
       "targets": [{"format": "table", "rawSql": "SELECT detected_at AS \"Detected at\", severity AS \"Severity\", anomaly_type AS \"Alert type\", COALESCE(ip_address::text, endpoint, '-') AS \"Affected target\", description AS \"Description\" FROM anomalies WHERE $__timeFilter(detected_at) ORDER BY detected_at DESC LIMIT 25", "refId": "A"}],
       "title": "Active Anomaly Alerts",
       "type": "table"
+    },
+    {
+      "datasource": {"type": "postgres", "uid": "log-analytics-postgres"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}}, "overrides": []},
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 17},
+      "id": 6,
+      "options": {"displayMode": "gradient", "orientation": "horizontal", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "showUnfilled": true},
+      "targets": [{"format": "table", "rawSql": "SELECT ip_address::text AS \"IP address\", SUM(request_count) AS \"Requests\" FROM ip_metrics WHERE $__timeFilter(window_start) GROUP BY ip_address ORDER BY 2 DESC LIMIT 10", "refId": "A"}],
+      "title": "Top IP Addresses by Requests",
+      "type": "bargauge"
     }
   ],
   "refresh": "5s",

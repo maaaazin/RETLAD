@@ -13,9 +13,11 @@ def test_normal_event_has_required_fields() -> None:
         "status_code",
         "response_time_ms",
         "user_agent",
+        "traffic_type",
     }
     assert event["status_code"] in {200, 201, 404, 500}
     assert event["response_time_ms"] > 0
+    assert event["traffic_type"] == "normal"
 
 
 def test_error_spike_event_is_a_server_error() -> None:
@@ -23,6 +25,7 @@ def test_error_spike_event_is_a_server_error() -> None:
 
     assert event["endpoint"] == "/api/orders"
     assert event["status_code"] == 500
+    assert event["traffic_type"] == "error_spike"
 
 
 def test_suspicious_ip_event_uses_fixed_demo_address() -> None:

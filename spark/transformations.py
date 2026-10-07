@@ -18,6 +18,7 @@ LOG_SCHEMA = StructType(
         StructField("status_code", IntegerType(), nullable=False),
         StructField("response_time_ms", IntegerType(), nullable=False),
         StructField("user_agent", StringType(), nullable=True),
+        StructField("traffic_type", StringType(), nullable=True),
     ]
 )
 
