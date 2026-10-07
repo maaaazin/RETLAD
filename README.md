@@ -33,6 +33,10 @@ Python log generator → Kafka → Spark Structured Streaming → PostgreSQL →
 
 Spark requires a supported Java runtime. Use Java 17 for local development.
 
+Grafana provisions the **RETLAD: Real-Time Log Anomaly Detection** dashboard
+automatically. Once the services are running, sign in at
+`http://localhost:3000` with the credentials in `.env`.
+
 ## Generate test traffic
 
 After Kafka is running, use `uv run` to send simulated web logs:
