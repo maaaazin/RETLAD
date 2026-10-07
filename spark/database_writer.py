@@ -3,11 +3,21 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import psycopg
 
 from config.settings import settings
+
+SPARK_LOCAL_TIMEZONE = timezone(timedelta(hours=5, minutes=30))
+
+
+def _timestamp_as_utc(value: datetime) -> datetime:
+    """Convert Spark's timezone-naive Python timestamps to UTC for PostgreSQL."""
+    if value.tzinfo is None:
+        return value.replace(tzinfo=SPARK_LOCAL_TIMEZONE).astimezone(timezone.utc)
+    return value.astimezone(timezone.utc)
 
 
 def _connection() -> psycopg.Connection[Any]:
@@ -30,7 +40,7 @@ def _execute_batch(sql: str, rows: Iterable[tuple[Any, ...]]) -> None:
 
 def write_request_metrics(batch_df: Any, _: int) -> None:
     rows = (
-        (row.window_start, row.window_end, row.total_requests, row.total_errors,
+        (_timestamp_as_utc(row.window_start), _timestamp_as_utc(row.window_end), row.total_requests, row.total_errors,
          row.error_rate_percent, row.average_response_time_ms)
         for row in batch_df.collect()
     )
@@ -52,7 +62,7 @@ def write_request_metrics(batch_df: Any, _: int) -> None:
 
 def write_endpoint_metrics(batch_df: Any, _: int) -> None:
     rows = (
-        (row.window_start, row.window_end, row.endpoint, row.total_requests,
+        (_timestamp_as_utc(row.window_start), _timestamp_as_utc(row.window_end), row.endpoint, row.total_requests,
          row.total_errors, row.average_response_time_ms)
         for row in batch_df.collect()
     )
@@ -73,7 +83,7 @@ def write_endpoint_metrics(batch_df: Any, _: int) -> None:
 
 def write_ip_metrics(batch_df: Any, _: int) -> None:
     rows = (
-        (row.window_start, row.window_end, row.ip_address, row.request_count)
+        (_timestamp_as_utc(row.window_start), _timestamp_as_utc(row.window_end), row.ip_address, row.request_count)
         for row in batch_df.collect()
     )
     _execute_batch(
@@ -90,7 +100,7 @@ def write_ip_metrics(batch_df: Any, _: int) -> None:
 
 def write_anomalies(batch_df: Any, _: int) -> None:
     rows = (
-        (row.window_start, row.anomaly_type, row.severity, row.ip_address, row.endpoint,
+        (_timestamp_as_utc(row.window_start), row.anomaly_type, row.severity, row.ip_address, row.endpoint,
          row.metric_value, row.threshold_value, row.description)
         for row in batch_df.collect()
     )
