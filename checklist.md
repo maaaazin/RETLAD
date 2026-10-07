@@ -19,11 +19,11 @@
 
 ## 3. Streaming Analytics
 
-- [ ] Read and parse Kafka messages with Spark Structured Streaming.
-- [ ] Validate input and handle malformed messages.
-- [ ] Calculate one-minute request, error-rate, endpoint, and IP metrics.
-- [ ] Detect error spikes, suspicious-IP traffic, and slow endpoints.
-- [ ] Persist metrics and alerts to PostgreSQL.
+- [x] Implement Kafka message parsing and input validation with Spark Structured Streaming.
+- [x] Implement one-minute request, error-rate, endpoint, and IP metrics.
+- [x] Implement error-spike, suspicious-IP, and slow-endpoint rules.
+- [x] Implement PostgreSQL metric and alert writers.
+- [ ] Verify the full streaming pipeline against live Kafka and PostgreSQL.
 
 ## 4. Grafana Dashboard
 
@@ -34,9 +34,8 @@
 
 ## 5. Quality and Submission
 
-- [ ] Add automated tests for event generation and anomaly rules.
+- [x] Add automated tests for event generation and anomaly rules.
 - [ ] Test normal traffic and every anomaly scenario end-to-end.
 - [ ] Capture architecture and dashboard screenshots.
 - [ ] Write the report and demo script.
 - [ ] Review the README setup instructions.
-

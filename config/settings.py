@@ -20,6 +20,7 @@ class Settings:
     error_rate_threshold: float = float(os.getenv("ERROR_RATE_THRESHOLD", "10"))
     requests_per_ip_threshold: int = int(os.getenv("REQUESTS_PER_IP_THRESHOLD", "50"))
     slow_response_threshold_ms: float = float(os.getenv("SLOW_RESPONSE_THRESHOLD_MS", "1000"))
+    spark_checkpoint_dir: str = os.getenv("SPARK_CHECKPOINT_DIR", ".spark-checkpoints")
 
 
 settings = Settings()

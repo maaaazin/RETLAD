@@ -31,6 +31,8 @@ Python log generator → Kafka → Spark Structured Streaming → PostgreSQL →
 2. Install the locked Python environment with `uv sync`.
 3. Start the local infrastructure with `docker compose up -d`.
 
+Spark requires a supported Java runtime. Use Java 17 for local development.
+
 ## Generate test traffic
 
 After Kafka is running, use `uv run` to send simulated web logs:
@@ -44,3 +46,14 @@ uv run python -m producer.kafka_producer --scenario slow_endpoint --events-per-s
 
 Use `--max-events 10` for a short, finite run. The Spark pipeline is added in
 the next milestone.
+
+## Run streaming analytics
+
+Once the local services are running, start the pipeline in a second terminal:
+
+```bash
+uv run python -m spark.streaming_processor
+```
+
+It consumes the `web_logs` Kafka topic, produces one-minute metrics and
+anomaly alerts, and writes them to PostgreSQL.
