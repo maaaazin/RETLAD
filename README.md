@@ -31,4 +31,33 @@ Python log generator → Kafka → Spark Structured Streaming → PostgreSQL →
 2. Install the locked Python environment with `uv sync`.
 3. Start the local infrastructure with `docker compose up -d`.
 
-The producer and Spark pipeline are added in the next milestones.
+Spark requires a supported Java runtime. Use Java 17 for local development.
+
+Grafana provisions the **RETLAD: Real-Time Log Anomaly Detection** dashboard
+automatically. Once the services are running, sign in at
+`http://localhost:3000` with the credentials in `.env`.
+
+## Generate test traffic
+
+After Kafka is running, use `uv run` to send simulated web logs:
+
+```bash
+uv run python -m producer.kafka_producer --scenario normal
+uv run python -m producer.kafka_producer --scenario error_spike --events-per-second 20
+uv run python -m producer.kafka_producer --scenario suspicious_ip --events-per-second 60
+uv run python -m producer.kafka_producer --scenario slow_endpoint --events-per-second 10
+```
+
+Use `--max-events 10` for a short, finite run. The Spark pipeline is added in
+the next milestone.
+
+## Run streaming analytics
+
+Once the local services are running, start the pipeline in a second terminal:
+
+```bash
+uv run python -m spark.streaming_processor
+```
+
+It consumes the `web_logs` Kafka topic, produces one-minute metrics and
+anomaly alerts, and writes them to PostgreSQL.
