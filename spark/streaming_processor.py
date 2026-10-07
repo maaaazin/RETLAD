@@ -39,6 +39,7 @@ def main() -> None:
     spark = (
         SparkSession.builder.appName("real-time-log-anomaly-detection")
         .config("spark.jars.packages", KAFKA_CONNECTOR)
+        .config("spark.sql.session.timeZone", "UTC")
         .getOrCreate()
     )
     spark.sparkContext.setLogLevel("WARN")
